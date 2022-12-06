@@ -1,4 +1,4 @@
-fn solve_part1(input: &str) -> usize {
+fn parse_calories(input: &str) -> Vec<usize> {
     input
         .split("\n\n")
         .map(|x| {
@@ -7,22 +7,20 @@ fn solve_part1(input: &str) -> usize {
                 .map(|x| x.parse::<usize>().unwrap())
                 .sum::<usize>()
         })
-        .max()
-        .unwrap()
+        .collect::<Vec<usize>>()
+}
+
+fn solve_part1(input: &str) -> usize {
+    let calories = parse_calories(input);
+
+    *calories.iter().max().unwrap()
 }
 
 fn solve_part2(input: &str) -> usize {
-    let mut result = input.split("\n\n")
-        .map(|x| {
-            x.split("\n")
-                .filter(|x| !x.is_empty())
-                .map(|x| x.parse::<usize>().unwrap())
-                .sum::<usize>()
-        })
-        .collect::<Vec<usize>>();
+    let mut calories = parse_calories(input);
 
-    result.sort_by(|a, b| b.cmp(a));
-    result[..3].iter().sum::<usize>()
+    calories.sort_by(|a, b| b.cmp(a));
+    calories.iter().take(3).sum()
 }
 
 fn main() {
